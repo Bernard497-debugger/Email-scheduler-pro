@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: email-scheduler
+    runtime: python3
+    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:10000 --workers 1 --threads 2 app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: BREVO_API_KEY
+        sync: false
+      - key: FROM_EMAIL
+        value: noreply@yourdomain.com
+      - key: FROM_NAME
+        value: Email Scheduler Pro
+      - key: DATABASE_PATH
+        value: /opt/render/project/data/email_scheduler.db
+    disk:
+      name: data
+      mountPath: /opt/render/project/data
+      sizeGB: 1
